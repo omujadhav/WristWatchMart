@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Wrist Watch Mart</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="stylesheet" href="css/navbar.css"/>
+  <link rel="stylesheet" href="css/filters.css"/>
+  <link rel="stylesheet" href="css/cards.css"/>
+  <link rel="stylesheet" href="css/cart.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-logo">
+      <span class="logo-icon">⌚</span>
+      <span class="logo-text">Wrist Watch Mart</span>
+    </div>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-section="all">All</button>
+      <button class="nav-tab" data-section="men">Men</button>
+      <button class="nav-tab" data-section="women">Women</button>
+      <button class="nav-tab" data-section="kids">Kids</button>
+    </div>
+    <div class="nav-right">
+      <button class="cart-btn" id="cartToggle">
+        <span class="cart-icon">🛒</span>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-sub">Curated timepieces for every wrist</p>
+      <h1 class="hero-title">Time, Crafted<br>with Purpose</h1>
+      <button class="hero-btn" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Explore Collection</button>
+    </div>
+    <div class="hero-watch-preview">
+      <div class="watch-showcase" id="heroWatch"></div>
+    </div>
+  </section>
+
+  <!-- MAIN SHOP -->
+  <section class="shop-section" id="shop">
+    <div class="shop-layout">
+
+      <!-- FILTER PANEL -->
+      <aside class="filter-panel" id="filterPanel">
+        <div class="filter-header">
+          <h3>Filter</h3>
+          <button class="clear-filters" id="clearFilters">Clear All</button>
+        </div>
+
+        <div class="filter-group">
+          <h4>Category</h4>
+          <div class="filter-options" id="categoryFilter">
+            <label><input type="radio" name="cat" value="all" checked> All</label>
+            <label><input type="radio" name="cat" value="men"> Men</label>
+            <label><input type="radio" name="cat" value="women"> Women</label>
+            <label><input type="radio" name="cat" value="kids"> Kids</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Brand</h4>
+          <div class="filter-options" id="brandFilter">
+            <label><input type="checkbox" value="Auriva" checked> Auriva</label>
+            <label><input type="checkbox" value="Kronfeld" checked> Kronfeld</label>
+            <label><input type="checkbox" value="Velante" checked> Velante</label>
+            <label><input type="checkbox" value="Norvik" checked> Norvik</label>
+            <label><input type="checkbox" value="Lúmex" checked> Lúmex</label>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Price Range</h4>
+          <div class="price-slider-wrap">
+            <div class="price-display">
+              <span id="priceMin">₹0</span>
+              <span id="priceMax">₹50,000</span>
+            </div>
+            <input type="range" id="priceSlider" min="0" max="50000" value="50000" step="500">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <h4>Sort By</h4>
+          <select id="sortBy" class="sort-select">
+            <option value="default">Default</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="name-asc">Name: A-Z</option>
+          </select>
+        </div>
+      </aside>
+
+      <!-- PRODUCT GRID -->
+      <main class="product-area">
+        <div class="results-bar">
+          <span id="resultsCount">0 watches</span>
+          <button class="filter-toggle-mobile" id="filterToggleMobile">⚙ Filters</button>
+        </div>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="no-results hidden" id="noResults">No watches match your filters.</div>
+      </main>
+
+    </div>
+  </section>
+
+  <!-- CART DRAWER -->
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <h3>Your Cart</h3>
+      <button class="close-cart" id="closeCart">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer" id="cartFooter">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
+    </div>
+    <div class="cart-empty hidden" id="cartEmpty">
+      <span>🕰</span>
+      <p>Your cart is empty</p>
+    </div>
+  </aside>
+
+  <!-- PRODUCT MODAL -->
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="product-modal" id="productModal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- CHECKOUT MODAL -->
+  <div class="modal-overlay hidden" id="checkoutOverlay">
+    <div class="checkout-modal" id="checkoutModal">
+      <button class="modal-close" id="checkoutClose">✕</button>
+      <h2>Checkout</h2>
+      <div class="checkout-form" id="checkoutForm">
+        <input type="text" placeholder="Full Name" id="chkName">
+        <input type="email" placeholder="Email Address" id="chkEmail">
+        <input type="tel" placeholder="Phone Number" id="chkPhone">
+        <input type="text" placeholder="Delivery Address" id="chkAddress">
+        <select id="chkPayment">
+          <option value="">Payment Method</option>
+          <option>Credit / Debit Card</option>
+          <option>UPI</option>
+          <option>Net Banking</option>
+          <option>Cash on Delivery</option>
+        </select>
+        <div class="checkout-summary" id="checkoutSummary"></div>
+        <button class="place-order-btn" id="placeOrderBtn">Place Order</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER SUCCESS -->
+  <div class="modal-overlay hidden" id="successOverlay">
+    <div class="success-modal">
+      <div class="success-icon">✓</div>
+      <h2>Order Placed!</h2>
+      <p id="successMsg"></p>
+      <button class="hero-btn" id="successClose">Continue Shopping</button>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-content">
+      <span class="logo-text">⌚ Wrist Watch Mart</span>
+      <p>© 2025 Wrist Watch Mart. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
